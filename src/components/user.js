@@ -14,7 +14,14 @@ class User extends Component {
                     name:'name_input',
                     type:'text',
                     placeholder: 'Enter your name'
-                }
+                },
+                validation:{
+                    required:true,
+                    minLen:5
+                },
+                valid:false,
+                touched:false,
+                validationMessage:''
             },
 
             lastname:{
@@ -26,7 +33,13 @@ class User extends Component {
                     name:'lastname_input',
                     type:'text',
                     placeholder: 'Enter your lastname'
-                }
+                },
+                validation:{
+                    required:true
+                },
+                valid:false,
+                touched:false,
+                validationMessage:''
             },
             message:{
                 element:'textarea',
@@ -37,7 +50,13 @@ class User extends Component {
                     name:'message_input',
                     rows:4,
                     cols:36
-                }
+                },
+                validation:{
+                    required:false
+                },
+                valid:true,
+                touched:false,
+                validationMessage:''
             },
             age:{
                 element:'select',
@@ -51,7 +70,13 @@ class User extends Component {
                         {val:'2',text:'20-30'},
                         {val:'3',text:'30+'}
                     ]
-                }
+                },
+                validation:{
+                    required:false
+                },
+                valid:true,
+                touched:false,
+                validationMessage:''
             }
         }
     }
@@ -66,12 +91,18 @@ class User extends Component {
         event.preventDefault();
 
         let dataToSubmit = {};
+        let formIsValid = true;
 
         for(let key in this.state.formData){
                 dataToSubmit[key] = this.state.formData[key].value
         }
 
+        for(let key in this.state.formData){
+            formIsValid = this.state.formData[key].valid && formIsValid;
+        }
+        if(formIsValid){
         console.log(dataToSubmit);
+        }
     }
 
     render(){
@@ -82,6 +113,7 @@ class User extends Component {
                         formData={
                             this.state.formData
                         }
+                        onBlur={(newState) => this.updateForm(newState)}
                         change={(newState) => this.updateForm(newState)}
                     />
 
